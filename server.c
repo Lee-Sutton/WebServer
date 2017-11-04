@@ -46,17 +46,6 @@ int main()
 }
 
 /**
- * @brief Error function used to communicate errors to the user.
- * After reporting the error the user, the system exits with an error
- * code = 1
- */
-void error(const char* message)
-{
-    fprintf(stderr, "[ERROR] %s \n", message);
-    exit(1);
-}
-
-/**
  * @brief Reads the incoming data from the client. 
  * @param socket: socket to read the incoming data from
  * @param *buf: [out] The incoming data is stored in the buf.
