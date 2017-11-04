@@ -4,7 +4,6 @@
 #include <string.h>
 
 void error(const char*);
-int read_in();
 struct sockaddr_in socket_create(int socket, char* buf, int len);
 
 int main() 
@@ -46,23 +45,38 @@ int main()
     return 0;
 }
 
+/**
+ * @brief Error function used to communicate errors to the user.
+ * After reporting the error the user, the system exits with an error
+ * code = 1
+ */
 void error(const char* message)
 {
-    printf("[ERROR] %s \n", message);
+    fprintf(stderr, "[ERROR] %s \n", message);
     exit(1);
 }
 
+/**
+ * @brief Reads the incoming data from the client. 
+ * @param socket: socket to read the incoming data from
+ * @param *buf: [out] The incoming data is stored in the buf.
+ * @param len: Length of the buffer
+ */
 int read_in(int socket, char *buf, int len)
 {
     char *s = buf;
     int slen = len;
     int c = recv(socket, s, slen, 0);
+    // Keep reading until a new line is reached
     while ((c > 0) && (s[c - 1] != '\n'))
     {
         s += c;
         slen -= c;
         c = recv(socket, s, slen, 0);
     }
+    // Replace the \r with \0
+    s[c-1] = '\0';
+    return len - slen;
 }
 
 
